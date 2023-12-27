@@ -3,21 +3,16 @@ from .models import categorias, productos, User, Role, Tienda, horarios, Metodop
 from django.contrib.auth.hashers import make_password
 
 # monda usuario registro
-
-
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
         fields = '__all__'
 
 # Crea usuarios
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-        # Para que el campo de contraseña no sea incluido en las respuestas
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -42,9 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-# actualiza usuarios rol tienda solo el campo .
-
-
+# actualiza usuarios rol tienda solo el campo
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -58,8 +51,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         return instance
 
 # actualiza usuarios rol tienda solo el campo .
-
-
 class UserClienteUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -80,18 +71,15 @@ class UserTokenSerializer(serializers.ModelSerializer):
 
 # Relacion con el usuario tienda
 
-
 class TiendaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tienda
         fields = '__all__'
-
-
+        
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = categorias
         fields = '__all__'
-
 
 class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -104,12 +92,10 @@ class HorarioSerializer(serializers.ModelSerializer):
         model = horarios
         fields = '__all__'
 
-
 class MetodopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Metodop
         fields = '__all__'
-
 
 class OrdenSerializer(serializers.ModelSerializer):
     metodo_pago = serializers.SerializerMethodField()
@@ -117,7 +103,6 @@ class OrdenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Orden
         fields = '__all__'
-
 
     def get_metodo_pago(self, obj):
         # Obtener los datos del método de pago asociado
@@ -132,8 +117,6 @@ class OrdenSerializer(serializers.ModelSerializer):
             }
         return None
     
-
-
 class DetalleOrdenDetalleSerializer(serializers.ModelSerializer):
     usuario = serializers.SerializerMethodField()
     productos = serializers.SerializerMethodField()
@@ -169,7 +152,6 @@ class DetalleOrdenDetalleSerializer(serializers.ModelSerializer):
         }
 
     def get_productos(self, obj):
-        # Mantén la lógica actual para obtener datos de productos
         return [
             {
                 'pro_id': detalle.producto.pro_id,
@@ -192,7 +174,6 @@ class DetalleOrdenDetalleSerializer(serializers.ModelSerializer):
         if not pro_foto:
             return None
 
-        # Obtén la URL completa de la imagen utilizando la configuración de Django
         return self.context['request'].build_absolute_uri(pro_foto.url)
 
     def get_metodo_pago(self, obj):
